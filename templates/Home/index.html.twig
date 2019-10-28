@@ -1,0 +1,33 @@
+{# templates/Home/index.html.twig #}
+
+{% extends "layout.html.twig" %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <style>
+      .navbar {
+        margin-bottom: 0px !important;
+        border-radius: 0px !important;
+      }
+    </style>
+{% endblock %}
+
+{% block body %}
+            <div>
+              <div class="col">
+                <h2 style="font-weight: bold;">CPayments</h2>
+                <h3>La meilleure façon de suivre vos transactions</h3>
+              </div>
+              <div class="col">
+                <h2>Paiement</h2>
+                <p><a class="btn btn-default" href="CardPayment">Formulaire de paiement </a></p>
+              </div>
+              <div class="col">
+                <h2>Options de Paiement</h2>
+                <p><a class="btn btn-default" href="OptionPaiment">Formulaire d'options de paiement</a></p>
+              </div>
+            </div>
+{% endblock %}
+

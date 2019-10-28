@@ -1,0 +1,84 @@
+{# templates/CardPayment/index.html.twig #}
+
+{% extends "layout.html.twig" %}
+
+{% block body %}
+  <h1>Réaliser un paiement</h1>
+                    <form action="#" method="post">
+                        <div class="col-xs-12 col-md-6 col-md-offset-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <h3 class="text-center">Détails du paiement</h3>
+                                        <img class="img-responsive cc-img" src="http://www.prepbootstrap.com/Content/images/shared/misc/creditcardicons.png">
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <form role="form">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    <label>MONTANT</label>
+                                                    <input type="number" class="form-control" placeholder="Montant à payer" name="montant" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    <label>NUMÉRO DE CARTE</label>
+                                                    <div class="input-group">
+                                                        <input class="form-control" placeholder="Numéro de carte" name="creditCard"
+                                                        type="number"  required />
+                                                        <span class="input-group-addon"><span class="fa fa-credit-card"></span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    <label>NOM PRENOM</label>
+                                                    <input type="text" class="form-control" placeholder="Nom Prenom" name="nomPrenom" required />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-7 col-md-7">
+                                                <div class="form-group">
+                                                    <label><span class="hidden-xs">DATE</span><span class="visible-xs-inline">EXP</span> D'EXP</label>
+                                                    <input type="tel" class="form-control" placeholder="MM/YY" name="dateExp" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-5 col-md-5 pull-right">
+                                                <div class="form-group">
+                                                    <label>CVC</label>
+                                                    <input  class="form-control" placeholder="CVC" name="cvc" type="number" min="1" max="999" maxlength = "3" oninput="maxLengthCheck(this)" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    <label>Order Ref</label>
+                                                    <input type="text" class="form-control" placeholder="Order Ref"  name="orderRef" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <button class="btn btn-warning btn-lg btn-block" name="PaimentCard" type="submit">Payer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+
+                        </div>
+                    </form>
+{% endblock %}
+

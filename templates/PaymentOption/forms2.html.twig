@@ -1,0 +1,88 @@
+{# templates/PaymentOption/forms.html.twig #}
+
+
+{% extends "layout.html.twig" %}
+
+{% block body %}
+
+
+  <h1>Réaliser un paiement</h1>
+
+{{ form_start(form) }}
+  
+      <div class="col-xs-12 col-md-6 col-md-offset-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <h3 class="text-center">Détails du paiement</h3>
+                                        <img class="img-responsive cc-img" src="http://www.prepbootstrap.com/Content/images/shared/misc/creditcardicons.png">
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <form role="form">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    {{ form_row(form.amount, { 'required': true, 'label' : 'Montant'|upper,'attr' : {'placeholder':"100"}})  }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    {{ form_row(form.creditCardNumber, { 'required': true, 'label' : 'Numéro de Carte'|upper,'attr' : {'placeholder':"Numéro de Carte"}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    {{ form_row(form.name, { 'required': true, 'label' : 'Nom et Prénom'|upper,'attr' : {'placeholder':"Nom et Prénom"}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-7 col-md-7">
+                                                <div class="form-group">
+                                                    {{ form_row(form.expirationDate, 
+                                                        { 'required': true,
+                                                         'label' : 'Date d\'expiration'|upper,
+                                                         'attr' : {'placeholder':"MM/AA"}
+                                                         })
+                                                     }}
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-5 col-md-5 pull-right">
+                                                <div class="form-group">
+                                                    {{ form_row(form.ccv, { 'required': true, 'label' : 'CCV'|upper,'attr' : {'placeholder':"xxx"}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    {{ form_row(form.orderRef, { 'required': true, 'label' : 'Order REF'|upper,'attr' : {'placeholder':"Order_REF"}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                                    {{ form_row(form.save, { 'required': true, 'label' : 'Payer'|upper, 'attr' : {'class' : "btn btn-warning btn-lg btn-block"}}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+
+                        </div>
+
+{{ form_end(form) }}
+
+
+     
+{% endblock %}
+
