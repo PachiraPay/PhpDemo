@@ -7,10 +7,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+
 use Twig\Environment; 
+
 use Psr\Log\LoggerInterface;
+
 use App\Models\PaymentInformation;
 use App\Services\PaymentServices;
+use App\Types\PaymentInformationType;
+
 
 class CardPaymentController extends AbstractController
 {
@@ -24,13 +29,25 @@ class CardPaymentController extends AbstractController
   {
     $this->paymentServices = $paymentServices;
   }
-   /**
-   * @Route("/CardPayment", name="CardPayment_form", methods="GET")
-   */
-   public function Index()
-  {
+  //  /**
+  //  * @Route("/CardPayment", name="CardPayment_form", methods="GET")
+  //  */
+  //  public function Index()
+  // {
     
-    return $this->render('CardPayment/formulaire.html.twig');
+  //   return $this->render('CardPayment/formulaire.html.twig');
+  // }
+
+    /**
+   * @Route("/CardPayment", name="CardPayment_form",  methods="GET")
+   */
+  public function IndexBis()
+  {
+        $payForm = new PaymentInformation();
+        $form = $this->createForm(PaymentInformationType::class, $payForm);
+        return $this->render('CardPayment/PaiementForm.html.twig', [
+          'form' => $form->createView(),
+      ]);
   }
  
    /**

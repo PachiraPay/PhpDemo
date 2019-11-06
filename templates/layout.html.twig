@@ -18,17 +18,18 @@
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
           <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+            
         {% endblock %}
     </head>
     <body>
         <nav class="navbar navbar-inverse">
           <div class="container-fluid">
             <div class="navbar-header">
-              <a class="navbar-brand" href="#">CPayments</a>
+              <a class="navbar-brand" href="/">CPayments</a>
             </div>
             <ul class="nav navbar-nav">
+              {# <li><a href="CardPayment">Paiement sans 3DS</a></li> #}
               <li><a href="CardPayment">Paiement sans 3DS</a></li>
-              <li><a href="optionPaiment2">Paiement sans 3DS bis</a></li>
               <li><a href="optionPaiment3">Options de Paiement</a></li>
             </ul>
           </div>
@@ -52,7 +53,10 @@
       </div>
     </div>
        
-        {% block bodyjs %}{% endblock %}
+        {% block bodyjs %}
+                 {{ encore_entry_script_tags('app') }}
+                 {{ encore_entry_script_tags('payment') }}
+        {% endblock %}
     </body>
 </html>
 

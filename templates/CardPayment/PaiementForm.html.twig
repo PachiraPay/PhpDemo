@@ -1,4 +1,4 @@
-{# templates/PaymentOption/forms.html.twig #}
+{# templates/CardPayment/PaiementForm.html.twig #}
 
 
 {% extends "layout.html.twig" %}
@@ -30,14 +30,27 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="form-group">
-                                                    {{ form_row(form.creditCardNumber, { 'required': true, 'label' : 'Numéro de Carte'|upper,'attr' : {'placeholder':"Numéro de Carte"}}) }}
+                                                    {{ form_label(form.creditCardNumber, 'NUMÉRO DE CARTE', {'label_attr': {'class': 'foo'}}) }}  
+                                                    <div class="input-group has-feedback">
+                                                        <span class="input-group-addon"><span class="fa fa-credit-card"></span></span>
+                                                        <div id="ccidDiv">
+                                                            {{ form_widget(form.creditCardNumber, {'required': true,'attr': {'class': 'foo'}}) }}
+                                                            <span id="ccidSpan" class="glyphicon"></span> 
+                                                        </div>
+                                                        {# <span class="input-group-addon"><span class="fa fa-credit-card"></span></span>
+                                                        <div id="ccidDiv">
+                                                            {{ form_row(form.creditCardNumber, { 'required': true, 'label' : 'Numéro de Carte'|upper,
+                                                            'attr' : {'placeholder':"XXXX XXXX XXXX XXXX",'pattern':"\d{4} \d{4} \d{4} \d{4}",'oninput':"checkCardNumber(this)",'type':"tel"}}) }}
+                                                        <span id="ccidSpan" class="glyphicon"></span>   
+                                                        </div> #}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="form-group">
-                                                    {{ form_row(form.name, { 'required': true, 'label' : 'Nom et Prénom'|upper,'attr' : {'placeholder':"Nom et Prénom"}}) }}
+                                                    {{ form_row(form.name, { 'required': true, 'label' : 'Nom et Prénom'|upper,'attr' : {'placeholder':"Nom et Prénom",'maxlength':"30",'onkeyup':"this.value = this.value.toUpperCase();"}}) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -55,7 +68,7 @@
                                             </div>
                                             <div class="col-xs-5 col-md-5 pull-right">
                                                 <div class="form-group">
-                                                    {{ form_row(form.ccv, { 'required': true, 'label' : 'CCV'|upper,'attr' : {'placeholder':"xxx"}}) }}
+                                                    {{ form_row(form.ccv, { 'required': true, 'label' : 'CCV'|upper,'attr' : {'placeholder':"xxx", 'maxlength':"3"}}) }}
                                                 </div>
                                             </div>
                                         </div>

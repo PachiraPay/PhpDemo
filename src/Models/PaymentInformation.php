@@ -9,14 +9,17 @@ class PaymentInformation
 {
     protected $amount;
    
+    /**
+     * @Assert\Luhn(message="Please check your credit card number.")
+     */
     protected $creditCardNumber;
    
      /**
      * @Assert\Length(
      *      min = 2,
      *      max = 30,
-     *      minMessage = "Votre nom doit etre supperieur a  {{ limit }} caracteres.",
-     *      maxMessage = "Votre nom doit etre inferieur a  {{ limit }} characters"
+     *      minMessage = "Votre nom doit etre supperieurX a  {{ limit }} caracteres.",
+     *      maxMessage = "Votre nom doit etre inferieurX a  {{ limit }} characters"
      * )
      */
      protected $name;
