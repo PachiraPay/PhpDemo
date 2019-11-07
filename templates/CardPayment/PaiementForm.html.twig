@@ -34,15 +34,9 @@
                                                     <div class="input-group has-feedback">
                                                         <span class="input-group-addon"><span class="fa fa-credit-card"></span></span>
                                                         <div id="ccidDiv">
-                                                            {{ form_widget(form.creditCardNumber, {'required': true,'attr': {'class': 'foo'}}) }}
+                                                            {{ form_widget(form.creditCardNumber, {'required': true,'attr': {'placeholder':"XXXX XXXX XXXX XXXX",'pattern':"\d{4} \d{4} \d{4} \d{4}",'class': 'masked'}}) }}
                                                             <span id="ccidSpan" class="glyphicon"></span> 
                                                         </div>
-                                                        {# <span class="input-group-addon"><span class="fa fa-credit-card"></span></span>
-                                                        <div id="ccidDiv">
-                                                            {{ form_row(form.creditCardNumber, { 'required': true, 'label' : 'Numéro de Carte'|upper,
-                                                            'attr' : {'placeholder':"XXXX XXXX XXXX XXXX",'pattern':"\d{4} \d{4} \d{4} \d{4}",'oninput':"checkCardNumber(this)",'type':"tel"}}) }}
-                                                        <span id="ccidSpan" class="glyphicon"></span>   
-                                                        </div> #}
                                                     </div>
                                                 </div>
                                             </div>
@@ -68,7 +62,9 @@
                                             </div>
                                             <div class="col-xs-5 col-md-5 pull-right">
                                                 <div class="form-group">
-                                                    {{ form_row(form.ccv, { 'required': true, 'label' : 'CCV'|upper,'attr' : {'placeholder':"xxx", 'maxlength':"3"}}) }}
+                                                    {{form_label(form.ccv,'CCV')}}
+                                                    {{form_widget(form.ccv, {'required': true, 'type':"number",'attr' : {'placeholder':"xxx", 'maxlength':"3",'pattern':".{3,}",'title':"3 nombre minimum"}}) }}
+                                                    {# {{ form_row(form.ccv, { 'required': true, 'label' : 'CCV'|upper,'attr' : {'placeholder':"xxx", 'maxlength':"3",'pattern':".{3,}",'title':"3 nombre minimum"}}) }} #}
                                                 </div>
                                             </div>
                                         </div>
@@ -98,4 +94,6 @@
 
      
 {% endblock %}
-
+        {% block bodyjs %}
+                <script data-autoinit="true"></script>
+        {% endblock %}
