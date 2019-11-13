@@ -1,11 +1,11 @@
 <?php
-// src/Models/PaymentInformation.php
+// src/Models/PaymentInformation3ds.php
 
 namespace App\Models;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-class PaymentInformation
+class PaymentInformation3ds
 {
     protected $amount;
    

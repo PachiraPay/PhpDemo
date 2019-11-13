@@ -1,4 +1,5 @@
 import 'jquery'
+
 var InputMask = function ( opts ) {
  if ( opts && opts.masked ) {
    // Make it easy to wrap this plugin and pass elements instead of a selector
@@ -31,7 +32,7 @@ var inputMask = {
  },
 
  refresh: function(init) {
-   var t, parentClass;
+   var t, parentClass,i;
 
    if ( !init ) {
      this.opts.masked = document.querySelectorAll( this.opts.masked );
@@ -115,7 +116,7 @@ var inputMask = {
    var isCharsetPresent = e.target.getAttribute('data-charset'),
        placeholder = isCharsetPresent || e.target.getAttribute('data-placeholder'),
        value = e.target.value, l = placeholder.length, newValue = '',
-       i, j, isInt, isLetter, strippedValue;
+       i, j, isInt, isLetter, strippedValue,matchesNumber,matchesLetter;
 
    // strip special characters
    strippedValue = isCharsetPresent ? value.replace(/\W/g, "") : value.replace(/\D/g, "");
@@ -148,7 +149,7 @@ var inputMask = {
    var validExample = e.target.getAttribute('data-valid-example'),
        pattern = new RegExp(e.target.getAttribute('pattern')),
        placeholder = e.target.getAttribute('data-placeholder'),
-       l = value.length, testValue = '';
+       l = value.length, testValue = '',i;
 
    //convert to months
    if (l == 1 && placeholder.toUpperCase().substr(0,2) == 'MM') {
@@ -177,17 +178,15 @@ for ( var property in inputMask ) {
  }
 }
 
- //Declaritive initalization
-(function(){
-  var scripts = document.getElementsByTagName('script'),
-      script = scripts[ scripts.length - 1 ];
-  if ( script.getAttribute('data-autoinit') ) {
-    new InputMask();
-  }
-})();
-
 
 $(function() {
  new InputMask();
+ $("#expirationMask" ).css( "display", "none" );
+ $("#NumCarteMask" ).css( "display", "none" );
+ $("#NumCarte").attr("placeholder", "XXXX XXXX XXXX XXXX");
+$("#expiration").attr("placeholder", "MM/YY");
 });
+
+
+
 

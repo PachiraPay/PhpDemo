@@ -3,13 +3,13 @@
 {% extends "layout.html.twig" %}
 
 {% block body %}
-    <h1>Résultat un paiement</h1>
+    <h1>Résultat du paiement</h1>
     {% if result["response_code"] == "succeeded" %}
         <div class="alert alert-success" role="alert">
         Paiement acceptée.
         </div>
     {% else %}
-        <div class="alert alert-danger" role="alert"> Erreur : {{result.responseMessage}} </div>
+        <div class="alert alert-danger" role="alert"> Erreur : {{result.responseMessage}}</div>
     {% endif %}
 
      

@@ -52,7 +52,7 @@ class PaymentOptionController extends AbstractController
    
 
    /**
-   * @Route("/optionPaiment3", name="optionpaiment_real_posted")
+   * @Route("/optionPaiment", name="optionpaiment_real_posted")
    */
   public function IndexPaymentOptionPosted(LoggerInterface $logger, Request $request)
   {
@@ -81,86 +81,88 @@ class PaymentOptionController extends AbstractController
     }
 }
 
-  /**
-   * @Route("/optionPaiment", name="optionpaiment")
-   */
-   public function Index()
-  {
-            $payForm = new PaymentInformation();
-        $form = $this->createFormBuilder($payForm)
-        ->add('amount', TextType::class, ['required' => true, 
-        'label' => 'Montant',
-        'attr' => ['placeholder'=>"100"]])
-        ->add('creditCardNumber', NumberType::class, ['required' => true, 
-        'label' => 'Numéro de Carte',
-        'attr' => ['placeholder'=>"Numéro de Carte"]])
-        ->add('name', TextType::class, ['required' => true,
-         'label' => 'Nom et Prénom',
-         'attr' => ['placeholder'=>"Prénom Nom"]])
-        ->add('expirationDate',  DateType::class, ['required' => true, 
-          'label' => 'Date d\'expiration',
-          'widget' => 'single_text',
-          'format' => 'MM/yy',
-           'attr' => ['placeholder'=>"mm/yy"]])
-        ->add('ccv', TextType::class, ['required' => true,
-         'label' => 'CCV',
-         'attr' => ['placeholder'=>"xxx"]])
-        ->add('orderRef', TextType::class, ['required' => true,
-           'label' => 'Order REF',
-           'attr' => ['placeholder'=>"Order_REF"] ])
-        ->add('save', SubmitType::class, ['label' => 'Payer'])
-        ->getForm();
+  // /**
+  //  * @Route("/optionPaiment", name="optionpaiment")
+  //  */
+  //  public function Index()
+  // {
+  //           $payForm = new PaymentInformation();
+  //       $form = $this->createFormBuilder($payForm)
+  //       ->add('amount', TextType::class, ['required' => true, 
+  //       'label' => 'Montant',
+  //       'attr' => ['placeholder'=>"100"]])
+  //       ->add('creditCardNumber', NumberType::class, ['required' => true, 
+  //       'label' => 'Numéro de Carte',
+  //       'attr' => ['placeholder'=>"Numéro de Carte"]])
+  //       ->add('name', TextType::class, ['required' => true,
+  //        'label' => 'Nom et Prénom',
+  //        'attr' => ['placeholder'=>"Prénom Nom"]])
+  //       ->add('expirationDate',  DateType::class, ['required' => true, 
+  //         'label' => 'Date d\'expiration',
+  //         'widget' => 'single_text',
+  //         'format' => 'MM/yy',
+  //          'attr' => ['placeholder'=>"mm/yy"]])
+  //       ->add('ccv', TextType::class, ['required' => true,
+  //        'label' => 'CCV',
+  //        'attr' => ['placeholder'=>"xxx"]])
+  //       ->add('orderRef', TextType::class, ['required' => true,
+  //          'label' => 'Order REF',
+  //          'attr' => ['placeholder'=>"Order_REF"] ])
+  //       ->add('save', SubmitType::class, ['label' => 'Payer'])
+  //       ->getForm();
   
 
 
 
-        return $this->render('PaymentOption/forms.html.twig', [
-          'form' => $form->createView(),
-      ]);
-  }
-    /**
-   * @Route("/optionPaiment2", name="optionpaiment2",  methods="GET")
-   */
-  public function IndexBis()
-  {
-        $payForm = new PaymentInformation();
-        $form = $this->createForm(PaymentInformationType::class, $payForm);
-        return $this->render('PaymentOption/forms2.html.twig', [
-          'form' => $form->createView(),
-      ]);
-  }
+  //       return $this->render('PaymentOption/forms.html.twig', [
+  //         'form' => $form->createView(),
+  //     ]);
+  // }
 
-  /**
-   * @Route("/optionPaiment2", name="optionpaiment2_form_posted", methods="POST")
-   */
-  public function Pay(LoggerInterface $logger, Request $request)
-  {
-    $payForm = new PaymentInformation();
+
+  //   /**
+  //  * @Route("/optionPaiment2", name="optionpaiment2",  methods="GET")
+  //  */
+  // public function IndexBis()
+  // {
+  //       $payForm = new PaymentInformation();
+  //       $form = $this->createForm(PaymentInformationType::class, $payForm);
+  //       return $this->render('PaymentOption/forms2.html.twig', [
+  //         'form' => $form->createView(),
+  //     ]);
+  // }
+
+//   /**
+//    * @Route("/optionPaiment2", name="optionpaiment2_form_posted", methods="POST")
+//    */
+//   public function Pay(LoggerInterface $logger, Request $request)
+//   {
+//     $payForm = new PaymentInformation();
        
 
-    $form = $this->createForm(PaymentInformationType::class, $payForm);
+//     $form = $this->createForm(PaymentInformationType::class, $payForm);
 
-    $form->handleRequest($request);
-    if ($form->isSubmitted() && $form->isValid()) {
+//     $form->handleRequest($request);
+//     if ($form->isSubmitted() && $form->isValid()) {
   
-      try
-      {
-        $paymentInformation = $form->getData();
-      print_r($paymentInformation);
+//       try
+//       {
+//         $paymentInformation = $form->getData();
+//       print_r($paymentInformation);
 
-        $result = $this->paymentServices->PushPayment($paymentInformation);
+//         $result = $this->paymentServices->PushPayment($paymentInformation);
     
-      } catch (Exception $e) {
-        $result = $e->getMessage();
-      }
-    print($result);
-    return $this->render('CardPayment/result.html.twig',['result' => $result]);
-  }
-  else{
-    return $this->render('PaymentOption/forms2.html.twig', [
-      'form' => $form->createView(),
-  ]);
-  }
-  }
+//       } catch (Exception $e) {
+//         $result = $e->getMessage();
+//       }
+//     print($result);
+//     return $this->render('CardPayment/result.html.twig',['result' => $result]);
+//   }
+//   else{
+//     return $this->render('PaymentOption/forms2.html.twig', [
+//       'form' => $form->createView(),
+//   ]);
+//   }
+//   }
 
 }

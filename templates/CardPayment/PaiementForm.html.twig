@@ -9,7 +9,7 @@
   <h1>Réaliser un paiement</h1>
 
 {{ form_start(form) }}
-  
+     {{ form_row(form._token) }} 
       <div class="col-xs-12 col-md-6 col-md-offset-3">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -23,7 +23,10 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="form-group">
-                                                    {{ form_row(form.amount, { 'required': true, 'label' : 'Montant'|upper,'attr' : {'placeholder':"100"}})  }}
+                                                    {# {{ form_row(form.amount, { 'required': true, 'label' : 'Montant'|upper,'attr' : {'placeholder':"100"}})  }} #}
+                                                     {{ form_label(form.amount, 'MONTANT', {'label_attr': {'class': 'foo'}}) }}  
+                                                     {{ form_widget(form.amount, {'id':'amountid','type':"hidden"}) }} 
+                                                    <span class="label label-default"> {{ form.vars.value.amount / 100 }} €</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -34,7 +37,7 @@
                                                     <div class="input-group has-feedback">
                                                         <span class="input-group-addon"><span class="fa fa-credit-card"></span></span>
                                                         <div id="ccidDiv">
-                                                            {{ form_widget(form.creditCardNumber, {'required': true,'attr': {'placeholder':"XXXX XXXX XXXX XXXX",'pattern':"\d{4} \d{4} \d{4} \d{4}",'class': 'masked'}}) }}
+                                                            {{ form_widget(form.creditCardNumber, {'id':'NumCarte','required': true,'attr': {'placeholder':"XXXX XXXX XXXX XXXX",'pattern':"\\d{4} \\d{4} \\d{4} \\d{4}",'class': 'masked','oninput':"checkCardNumber(this)"}}) }}
                                                             <span id="ccidSpan" class="glyphicon"></span> 
                                                         </div>
                                                     </div>
@@ -44,7 +47,7 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="form-group">
-                                                    {{ form_row(form.name, { 'required': true, 'label' : 'Nom et Prénom'|upper,'attr' : {'placeholder':"Nom et Prénom",'maxlength':"30",'onkeyup':"this.value = this.value.toUpperCase();"}}) }}
+                                                    {{ form_row(form.name, {'required': true, 'label' : 'Nom et Prénom'|upper,'attr' : {'placeholder':"Nom et Prénom",'maxlength':"30",'onkeyup':"this.value = this.value.toUpperCase();"}}) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -52,26 +55,22 @@
                                         <div class="row">
                                             <div class="col-xs-7 col-md-7">
                                                 <div class="form-group">
-                                                    {{ form_row(form.expirationDate, 
-                                                        { 'required': true,
-                                                         'label' : 'Date d\'expiration'|upper,
-                                                         'attr' : {'placeholder':"MM/AA"}
-                                                         })
-                                                     }}
+                                                {{ form_label(form.expirationDate, 'DATE D\'EXPIRATION') }}  
+                                                {{ form_widget(form.expirationDate, {'id':"expiration",'type':"tel",'required': true,'attr': 
+                                                {'pattern':"(1[0-2]|0[1-9])\\/\\d\\d",'data-valid-example':"11/18" ,'class': "masked",'placeholder':"MM/YY"}}) }}
                                                 </div>
                                             </div>
                                             <div class="col-xs-5 col-md-5 pull-right">
                                                 <div class="form-group">
                                                     {{form_label(form.ccv,'CCV')}}
                                                     {{form_widget(form.ccv, {'required': true, 'type':"number",'attr' : {'placeholder':"xxx", 'maxlength':"3",'pattern':".{3,}",'title':"3 nombre minimum"}}) }}
-                                                    {# {{ form_row(form.ccv, { 'required': true, 'label' : 'CCV'|upper,'attr' : {'placeholder':"xxx", 'maxlength':"3",'pattern':".{3,}",'title':"3 nombre minimum"}}) }} #}
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="form-group">
-                                                    {{ form_row(form.orderRef, { 'required': true, 'label' : 'Order REF'|upper,'attr' : {'placeholder':"Order_REF"}}) }}
+                                                    {{ form_row(form.orderRef, {'required': true, 'label' : 'Order REF'|upper,'attr' : {'placeholder':"Order REF"}}) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -95,5 +94,75 @@
      
 {% endblock %}
         {% block bodyjs %}
-                <script data-autoinit="true"></script>
+        {{ parent() }}
+                <script data-autoinit="true">
+                 function valid_credit_card(value) {
+                        //console.log(value);
+                        // console.log("Hello");
+                    var cardNum= value.value;
+                    // Accept only digits, dashes or spaces
+                    if (/[^0-9-\s]+/.test(cardNum)) return false;
+
+                    // The Luhn Algorithm. It's so pretty.
+                    let nCheck = 0, bEven = false;
+                    cardNum = cardNum.replace(/\D/g, "");
+                    //alert(cardNum)
+                    for (var n = cardNum.length - 1; n >= 0; n--) {
+                        var cDigit = cardNum.charAt(n),
+                            nDigit = parseInt(cDigit, 10);
+                
+                        if (bEven && (nDigit *= 2) > 9) nDigit -= 9;
+                
+                        nCheck += nDigit;
+                        bEven = !bEven;
+                    }
+                    //alert(nCheck % 10)
+                    return (nCheck % 10) == 0;
+                
+                }
+                function checkCardNumber(typedNb) {
+    
+                var ccidDiv = document.getElementById("ccidDiv");
+                var ccidSpan = document.getElementById("ccidSpan");
+
+                if (typedNb.length < 19) {
+                    errorCssClass();  
+                }
+                else {
+                    let validity = valid_credit_card(typedNb);
+                    if (validity) {
+                        successCssClass();
+                    }else{
+                        errorCssClass(); 
+                    }
+                
+                }
+            
+            }
+            function successCssClass() {
+            ccidDiv.classList.remove("has-error");
+            ccidDiv.classList.remove("has-feedback");
+            ccidSpan.classList.remove("glyphicon-remove");
+            ccidSpan.classList.remove("form-control-feedback");
+
+            ccidDiv.classList.add("has-success");
+            ccidDiv.classList.add("has-feedback");
+            ccidSpan.classList.add("glyphicon-ok");
+            ccidSpan.classList.add("form-control-feedback");
+            }
+
+            function errorCssClass() {
+                        ccidDiv.classList.remove("has-success");
+                        ccidDiv.classList.remove("has-success");
+                        ccidSpan.classList.remove("glyphicon-ok");
+                        ccidSpan.classList.remove("form-control-feedback");
+
+                        ccidDiv.classList.add("has-error");
+                        ccidDiv.classList.add("has-feedback");
+                        ccidSpan.classList.add("glyphicon-remove");
+                        ccidSpan.classList.add("form-control-feedback");
+            }
+                </script>
+
+                
         {% endblock %}

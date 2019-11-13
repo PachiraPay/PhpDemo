@@ -93,7 +93,7 @@ class PaymentServices
         $CardData = new CardData();
         $CardData->setCardScheme("cb");
         $CardData->setExpirationDate($paymentInformation->getExpirationDate());
-        $CardData->setCardNumber($paymentInformation->getCreditCardNumber());
+        $CardData->setCardNumber(str_replace(' ', '', $paymentInformation->getCreditCardNumber()));
         $CardData->setSecurityNumber($paymentInformation->getCcv());
         $CardData->setCardLabel($paymentInformation->getName());
     
