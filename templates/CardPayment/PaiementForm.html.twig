@@ -23,9 +23,8 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="form-group">
-                                                    {# {{ form_row(form.amount, { 'required': true, 'label' : 'Montant'|upper,'attr' : {'placeholder':"100"}})  }} #}
-                                                     {{ form_label(form.amount, 'MONTANT', {'label_attr': {'class': 'foo'}}) }}  
-                                                     {{ form_widget(form.amount, {'id':'amountid','type':"hidden"}) }} 
+                                                     {{ form_label(form.amount, 'MONTANT')}}  
+                                                     {{ form_widget(form.amount) }} 
                                                     <span class="label label-default"> {{ form.vars.value.amount / 100 }} €</span>
                                                 </div>
                                             </div>
@@ -33,11 +32,11 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="form-group">
-                                                    {{ form_label(form.creditCardNumber, 'NUMÉRO DE CARTE', {'label_attr': {'class': 'foo'}}) }}  
+                                                    {{ form_label(form.creditCardNumber, 'NUMÉRO DE CARTE') }}  
                                                     <div class="input-group has-feedback">
                                                         <span class="input-group-addon"><span class="fa fa-credit-card"></span></span>
                                                         <div id="ccidDiv">
-                                                            {{ form_widget(form.creditCardNumber, {'id':'NumCarte','required': true,'attr': {'placeholder':"XXXX XXXX XXXX XXXX",'pattern':"\\d{4} \\d{4} \\d{4} \\d{4}",'class': 'masked','oninput':"checkCardNumber(this)"}}) }}
+                                                            {{ form_widget(form.creditCardNumber, {'id':'NumCarte'}) }}
                                                             <span id="ccidSpan" class="glyphicon"></span> 
                                                         </div>
                                                     </div>
@@ -47,7 +46,8 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="form-group">
-                                                    {{ form_row(form.name, {'required': true, 'label' : 'Nom et Prénom'|upper,'attr' : {'placeholder':"Nom et Prénom",'maxlength':"30",'onkeyup':"this.value = this.value.toUpperCase();"}}) }}
+                                                    {{ form_label(form.name, 'NOM ET PRÉNOM') }}
+                                                    {{ form_widget(form.name, {'id':'nomPrenom' }) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -56,21 +56,21 @@
                                             <div class="col-xs-7 col-md-7">
                                                 <div class="form-group">
                                                 {{ form_label(form.expirationDate, 'DATE D\'EXPIRATION') }}  
-                                                {{ form_widget(form.expirationDate, {'id':"expiration",'type':"tel",'required': true,'attr': 
-                                                {'pattern':"(1[0-2]|0[1-9])\\/\\d\\d",'data-valid-example':"11/18" ,'class': "masked",'placeholder':"MM/YY"}}) }}
+                                                {{ form_widget(form.expirationDate, {'id':"expiration" }) }}
                                                 </div>
                                             </div>
                                             <div class="col-xs-5 col-md-5 pull-right">
                                                 <div class="form-group">
                                                     {{form_label(form.ccv,'CCV')}}
-                                                    {{form_widget(form.ccv, {'required': true, 'type':"number",'attr' : {'placeholder':"xxx", 'maxlength':"3",'pattern':".{3,}",'title':"3 nombre minimum"}}) }}
+                                                    {{form_widget(form.ccv) }}
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="form-group">
-                                                    {{ form_row(form.orderRef, {'required': true, 'label' : 'Order REF'|upper,'attr' : {'placeholder':"Order REF"}}) }}
+                                                    {{form_label(form.orderRef,'ORDER REF')}}
+                                                    {{form_widget(form.orderRef) }}
                                                 </div>
                                             </div>
                                         </div>

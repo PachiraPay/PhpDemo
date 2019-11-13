@@ -15,10 +15,9 @@
         {% endblock %}
 
         {% block headjs %}
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-          <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-            
+          {{ encore_entry_script_tags('jQuery') }} 
+          {{ encore_entry_script_tags('bootstrapJs') }}
+          {{ encore_entry_script_tags('kitFont') }} 
         {% endblock %}
     </head>
     <body>
@@ -31,6 +30,7 @@
               {# <li><a href="CardPayment">Paiement sans 3DS</a></li> #}
               <li><a href="CardPayment">Paiement sans 3DS</a></li>
               <li><a href="optionPaiment">Options de Paiement</a></li>
+              {# <li><a href="CardPayment3ds">Paiement avec 3DS</a></li> #}
             </ul>
           </div>
         </nav>

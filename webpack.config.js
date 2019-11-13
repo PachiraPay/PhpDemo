@@ -1,3 +1,7 @@
+// 
+// yarn encore dev --watch
+//
+
 var Encore = require('@symfony/webpack-encore');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
@@ -24,7 +28,11 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
+    // .addEntry('bootstrapCss', './assets/css/bootstrap.3.4.0.min.css')
     .addEntry('payment', './assets/js/jsFile.js')
+    .addEntry('jQuery','./assets/js/jquery.3.4.1.min.js')
+    .addEntry('bootstrapJs', './assets/js/bootstrap.3.4.0.min.js')
+    .addEntry('kitFont','./assets/js/kit.fontawesome.a076d05399.js')
     .autoProvidejQuery()
     //.addEntry('page2', './assets/js/page2.js')
 
