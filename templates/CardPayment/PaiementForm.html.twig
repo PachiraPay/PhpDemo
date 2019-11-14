@@ -25,7 +25,7 @@
                                                 <div class="form-group">
                                                      {{ form_label(form.amount, 'MONTANT')}}  
                                                      {{ form_widget(form.amount) }} 
-                                                    <span class="label label-default"> {{ form.vars.value.amount / 100 }} €</span>
+                                                    <span class="label label-default"> {{ form.vars.value.amount }} €</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -62,7 +62,8 @@
                                             <div class="col-xs-5 col-md-5 pull-right">
                                                 <div class="form-group">
                                                     {{form_label(form.ccv,'CCV')}}
-                                                    {{form_widget(form.ccv) }}
+                                                    {{form_widget(form.ccv, {'id':"ccvId" }) }}
+                                                    {# {{form_widget(form.ccv, {'required': true, 'type':"number",'attr' : {'placeholder':"xxx", 'maxlength':"3",'pattern':".{3,}",'title':"3 nombre minimum"}}) }}                                                             #}
                                                 </div>
                                             </div>
                                         </div>
@@ -96,6 +97,25 @@
         {% block bodyjs %}
         {{ parent() }}
                 <script data-autoinit="true">
+
+                function setInputFilter(textbox, inputFilter) {
+                ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+                    textbox.addEventListener(event, function() {
+                    if (inputFilter(this.value)) {
+                        this.oldValue = this.value;
+                        this.oldSelectionStart = this.selectionStart;
+                        this.oldSelectionEnd = this.selectionEnd;
+                    } else if (this.hasOwnProperty("oldValue")) {
+                        this.value = this.oldValue;
+                        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                    }
+                    });
+                });
+                }
+
+                setInputFilter(document.getElementById("ccvId"), function(value) {
+                return /^\d*$/.test(value); });
+
                  function valid_credit_card(value) {
                         //console.log(value);
                         // console.log("Hello");

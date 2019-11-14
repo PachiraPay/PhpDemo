@@ -34,7 +34,7 @@ class PaymentInformation
     }
     public function setAmount($amount)
     {
-        $this->amount = $amount *100;
+        $this->amount = $amount ;
     }
     public function getCreditCardNumber()
     {

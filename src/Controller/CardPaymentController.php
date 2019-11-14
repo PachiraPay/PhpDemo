@@ -45,24 +45,18 @@ class CardPaymentController extends AbstractController
       try
       {
         $paymentInformation = $form->getData();
-        print_r($paymentInformation);
+        //print_r($paymentInformation);
         $result = $this->paymentServices->PushPayment($paymentInformation);
       } catch (Exception $e) {
         $result = $e->getMessage();
       }
-      print($result);
+      //print($result);
       return $this->render('CardPayment/result.html.twig',['result' => $result]);
     }
     else 
     {
       $amountvar = rand(1,100000)/100;
       $payForm->setAmount($amountvar);
-      // $payForm->setCreditCardNumber("5017670000001800");
-      // $payForm->setName("mm");
-      // $payForm->setExpirationDate(date_create_from_format('d/m/Y', '1/12/2020'));
-      // $payForm->setCcv("000");
-      // $payForm->setOrderRef("ORDERREF_" . rand(1,100000));
-
       $form = $this->createForm(PaymentInformationType::class, $payForm);
       return $this->render('CardPayment/PaiementForm.html.twig', [
         'form' => $form->createView(),

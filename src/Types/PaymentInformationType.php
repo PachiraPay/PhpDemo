@@ -29,18 +29,20 @@ class PaymentInformationType  extends AbstractType
                                             'attr' => ['placeholder'=>"Nom et Prénom",
                                                         'maxlength'=>"30",
                                                         'onkeyup'=>"this.value = this.value.toUpperCase();"]])
-            ->add('expirationDate',  TelType::class, [ 'required'=> true,
+            ->add('expirationDate',  DateType::class, [ 'format'=>'MM/yy',
+                                                        'widget'=>'single_text',
                                                         'attr' => ['placeholder'=>"MM/YY",
                                                         'class'=> "masked",
                                                         'data-valid-example'=>"11/18",
                                                         'pattern'=>"(1[0-2]|0[1-9])\\/\\d\\d"]
                                                         ])
-            ->add('ccv', NumberType::class, [ 'required'=> true,
+            ->add('ccv', TextType::class, [ 'required'=> true,
                                             'attr' => ['placeholder'=>"xxx",
                                             'maxlength'=> "3",
                                             'title'=>"3 nombre minimum",
                                             'pattern'=>".{3,}"]
                                             ])
+            // ->add('ccv', TextType::class)
             ->add('orderRef', TextType::class,[ 'required'=> true,
                                                 'attr' => ['placeholder'=>"Order REF"]])
             ->add('save', SubmitType::class)

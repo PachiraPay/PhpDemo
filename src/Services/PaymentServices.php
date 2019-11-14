@@ -88,8 +88,8 @@ class PaymentServices
         $order->setOrderRef($paymentInformation->getOrderRef());
         $order->setInvoiceId(12345);
         $order->setOrderDate(date("Y/m/d H:i:s"));
-        $order->setAmount($paymentInformation->getAmount());
-    
+        $order->setAmount($paymentInformation->getAmount()*100);
+            
         $CardData = new CardData();
         $CardData->setCardScheme("cb");
         $CardData->setExpirationDate($paymentInformation->getExpirationDate());
