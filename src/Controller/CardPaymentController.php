@@ -35,7 +35,6 @@ class CardPaymentController extends AbstractController
    */
   public function Index(LoggerInterface $logger, Request $request)
   {
-
     $payForm = new PaymentInformation();
 
     $form = $this->createForm(PaymentInformationType::class, $payForm);
@@ -45,7 +44,6 @@ class CardPaymentController extends AbstractController
       try
       {
         $paymentInformation = $form->getData();
-        //print_r($paymentInformation);
         $result = $this->paymentServices->PushPayment($paymentInformation);
       } catch (Exception $e) {
         $result = $e->getMessage();

@@ -65,7 +65,6 @@ class PaymentServices
             $auth_token = $this->securityTokenApi->v1AuthTokenGet($authorization);
             $auth_token = trim($auth_token,'"');
             $this->token = $auth_token ;
-
         }
         return $this->token ;
     }

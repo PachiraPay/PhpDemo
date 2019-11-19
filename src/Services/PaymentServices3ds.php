@@ -12,6 +12,7 @@ use CpaymentConnector\Configuration;
 use CpaymentConnector\Api\Card3DsPaymentApi;
 use CpaymentConnector\Api\SecurityTokenApi;
 use CpaymentConnector\Model\Card3DsPaymentRequest;
+use CpaymentConnector\Model\Card3DsPaymentPutRequest;
 use CpaymentConnector\Model\CardPaymentContextData;
 use CpaymentConnector\Model\Options;
 use CpaymentConnector\Model\Order;
@@ -50,12 +51,28 @@ class PaymentServices3ds
         $this->merchantSiteId = $merchantSiteId;
     }
  
-    public function PushPayment(PaymentInformation $paymentInformation)
+    public function PushPayment3Ds(PaymentInformation $paymentInformation)
     {
         $this->GetToken();
         $card3DsPaymentRequest = $this->ConvertToCard3DsPaymentRequest($paymentInformation);
+        print_r($card3DsPaymentRequest);
         return  $this->card3DsPaymentApi->v1PaymentsCard3dsPaymentPost($this->GetToken(), $card3DsPaymentRequest);
     }
+
+    public function PushPayment3DsPut()
+    {
+        $this->GetToken();
+        $card3Ds_Payment_PutRequest = new Card3DsPaymentPutRequest(); 
+
+        $card3Ds_Payment_PutRequest->setMerchantId(1);
+        $card3Ds_Payment_PutRequest->setMerchantSiteId("100");
+        $card3Ds_Payment_PutRequest->setPaymentRequestId($_SESSION["paymentRequestId"] );
+        $card3Ds_Payment_PutRequest->setOrderRef($_SESSION["orderRef"]);
+        $card3Ds_Payment_PutRequest->setOrderTag("LabelTag");
+        
+        return  $this->card3DsPaymentApi->v1PaymentsCard3dsPaymentPut($this->GetToken(), $card3Ds_Payment_PutRequest);
+    }
+
 
     function GetToken()
     {
@@ -65,7 +82,6 @@ class PaymentServices3ds
             $auth_token = $this->securityTokenApi->v1AuthTokenGet($authorization);
             $auth_token = trim($auth_token,'"');
             $this->token = $auth_token ;
-
         }
         return $this->token ;
     }
@@ -74,13 +90,13 @@ class PaymentServices3ds
     {
         $card3ds_payment_request = new Card3DsPaymentRequest(); 
 
-        $card3ds_payment_request->setReturnUrl("http://merchant.com/return");
+        $card3ds_payment_request->setReturnUrl("http://cpayment:8080/CardPayment3dsPut");
         $context = new CardPaymentContextData();
         $context->setMerchantId($this->merchantId);//lecture depuis form
         $context->setMerchantSiteId($this->merchantSiteId);
         $context->setCurrency("eur");
         $context->setCountry("fr");
-        $context->setPaymentOptionRef("1");
+        $context->setPaymentOptionRef("21");
         $context->setCustomerRef("CUSTOMER01");
         $context->setPaymentAttempt(1);
     
@@ -88,6 +104,7 @@ class PaymentServices3ds
     
         $order = new Order();
         $order->setOrderRef($paymentInformation->getOrderRef());
+        $_SESSION["orderRef"] = $paymentInformation->getOrderRef();
         $order->setInvoiceId(12345);
         $order->setOrderDate(date("Y/m/d H:i:s"));
         $order->setAmount($paymentInformation->getAmount() *100);
@@ -100,8 +117,8 @@ class PaymentServices3ds
         $CardData->setCardLabel($paymentInformation->getName());
     
         $StoredCard = new StoredCard();
-        $StoredCard->setId("blablacarte");
-        $StoredCard->setLabel("labelcarte");
+        $StoredCard->setId("");
+        $StoredCard->setLabel("");
     
         $validationMode = new ValidationModeOverride();
         $validationMode->setValidationMode("manual");
@@ -110,7 +127,7 @@ class PaymentServices3ds
         $card3ds_payment_request->setOptions($option);
         $card3ds_payment_request->setOrder($order);
         $card3ds_payment_request->setCard($CardData);
-        $card3ds_payment_request->setStoredCard($StoredCard);
+        //$card3ds_payment_request->setStoredCard($StoredCard);
         $card3ds_payment_request->setValidationMode($validationMode);
         $card3ds_payment_request->setNotificationUrl("http://merchant.com/notification");
         return $card3ds_payment_request;
