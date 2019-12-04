@@ -6,9 +6,10 @@
 <h2>Payment3dsForm</h2>
 
 <div>
+{% if result.card_enrollment_response_code == "notEnrolled" %} 
     <h4>Payment3dsResponse</h4>
     <hr />
-    <dl class="dl-horizontal">
+    <dl>
         <dt>
              <label>Card Payment3ds Request ID</label> 
         </dt>
@@ -20,24 +21,30 @@
              <label>Redirection URL</label>
         </dt>
         <dd>
-             {{result.card3dsRedirectionData.redirectionUrl }} 
+             {{result.card3dsRedirectionData.redirectionUrl }}  
         </dd>
 
         <dt>
             <label>Card enrollment response</label>
         </dt>
         <dd>
-           {{result.card_enrollment_response_code }} 
+            {{result.card_enrollment_response_code }}  
         </dd>
     </dl>
 </div>
-{% if result.card_enrollment_response_code == "enrolled" %}
-        <form id="formulaire" method="post" action="{{result.card3dsRedirectionData.redirectionUrl }}" >
+{% endif %}
+{% if result.card_enrollment_response_code == "unknown" %} 
+  <div class="alert alert-danger">
+    <strong>Erreur: </strong> {{ result.response_message }}.
+  </div>
+{% endif %}
+{% if result.card_enrollment_response_code == "enrolled" %} 
+       <form id="formulaire" method="post" action="{{result.card3dsRedirectionData.redirectionUrl }}" >
         <input type="hidden" id="PaReq" name="PaReq" value="{{result.card3dsRedirectionData.params["PaReq"] }}" />
         <input type="hidden" id="TermUrl" name="TermUrl" value="{{result.card3dsRedirectionData.params["TermUrl"] }}" />
-        <input type="hidden" id="MD" name="MD" value="" />
-        <script>document.forms[0].submit();</script>   
-    </form>
+        <input type="hidden" id="MD" name="MD" value="" /> 
+        <script>document.forms[0].submit();</script>    
+        </form>
 {% endif %}
 
 

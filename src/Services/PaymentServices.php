@@ -96,10 +96,6 @@ class PaymentServices
         $CardData->setSecurityNumber($paymentInformation->getCcv());
         $CardData->setCardLabel($paymentInformation->getName());
     
-        $StoredCard = new StoredCard();
-        $StoredCard->setId("blablacarte");
-        $StoredCard->setLabel("labelcarte");
-    
         $validationMode = new ValidationModeOverride();
         $validationMode->setValidationMode("manual");
     
@@ -107,9 +103,7 @@ class PaymentServices
         $card_payment_request->setOptions($option);
         $card_payment_request->setOrder($order);
         $card_payment_request->setCard($CardData);
-        $card_payment_request->setStoredCard($StoredCard);
         $card_payment_request->setValidationMode($validationMode);
-        $card_payment_request->setNotificationUrl("http://merchant.com/notification");
         return $card_payment_request;
     }
 }

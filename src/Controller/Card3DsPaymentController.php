@@ -13,21 +13,21 @@ use Twig\Environment;
 use Psr\Log\LoggerInterface;
 
 use App\Models\PaymentInformation;
-use App\Services\PaymentServices3ds;
+use App\Services\Payment3dsServices;
 use App\Types\PaymentInformationType;
 
 
 class Card3DsPaymentController extends AbstractController
 {
-  /** @var PaymentServices3ds $paymentService3ds paymentservice from Cpayment. */ 
+  /** @var Payment3dsServices $paymentService3ds paymentservice from Cpayment. */ 
   protected $paymentService3ds = null;
   
   /**
    * Class constructor.
    */
-  public function __construct(PaymentServices3ds $paymentServices3ds)
+  public function __construct(Payment3dsServices $payment3dsServices)
   {
-    $this->paymentService3ds = $paymentServices3ds;
+    $this->paymentService3ds = $payment3dsServices;
   }
 
     /**
@@ -35,6 +35,9 @@ class Card3DsPaymentController extends AbstractController
    */
   public function Index(LoggerInterface $logger, Request $request)
   {
+    $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 
+    "https" : "http") . "://" . $_SERVER['HTTP_HOST'] ;
+
     $payForm = new PaymentInformation();
 
     $form = $this->createForm(PaymentInformationType::class, $payForm);
@@ -44,7 +47,7 @@ class Card3DsPaymentController extends AbstractController
       try
       {
         $paymentInformation = $form->getData();
-        $result = $this->paymentService3ds->PushPayment3Ds($paymentInformation);
+        $result = $this->paymentService3ds->InitPayment3DS($paymentInformation);
         $_SESSION["paymentRequestId"] = $result["card3ds_payment_request_id"];
       } catch (Exception $e) {
         $result = $e->getMessage();
@@ -55,8 +58,8 @@ class Card3DsPaymentController extends AbstractController
     $amountvar = rand(1,100000)/100;
     $payForm->setAmount($amountvar);
     $form = $this->createForm(PaymentInformationType::class, $payForm);
-    return $this->render('CardPayment3ds/PaimentForm3ds.html.twig', [
-      'form' => $form->createView(),
+    return $this->render('CardPayment/PaiementForm.html.twig', [
+      'form' => $form->createView(), 'title_page'=> 'Réaliser un paiement avec 3DS'
       ]);
     }
   }
@@ -68,7 +71,7 @@ class Card3DsPaymentController extends AbstractController
   {
     try
       {
-        $result = $this->paymentService3ds->PushPayment3DsPut();
+        $result = $this->paymentService3ds->FinalisePayment3DS(33,"99002");
       } catch (Exception $e) {
         $result = $e->getMessage();
       }
