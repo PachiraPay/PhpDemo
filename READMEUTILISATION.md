@@ -17,16 +17,99 @@ To install the bindings via [Composer](http://getcomposer.org/), add the followi
 
 ```json
 {
+  "type": "project",
+  "license": "proprietary",
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/GIT_USER_ID/GIT_REPO_ID.git"
+      "url": "https://github.com/ccommercepayment/phpconnector"
     }
   ],
   "require": {
-    "GIT_USER_ID/GIT_REPO_ID": "*@dev"
+    "php": "^7.1.3",
+    "ext-ctype": "*",
+    "ext-iconv": "*",
+    "cpayment/connector": "dev-master",
+    "doctrine/annotations": "^1.8",
+    "sensio/framework-extra-bundle": "^5.5",
+    "symfony/apache-pack": "^1.0",
+    "symfony/console": "4.3.*",
+    "symfony/dotenv": "4.3.*",
+    "symfony/expression-language": "4.3.*",
+    "symfony/flex": "^1.3.1",
+    "symfony/form": "4.3.*",
+    "symfony/framework-bundle": "4.3.*",
+    "symfony/http-client": "4.3.*",
+    "symfony/intl": "4.3.*",
+    "symfony/monolog-bridge": "4.3.*",
+    "symfony/monolog-bundle": "^3.4",
+    "symfony/orm-pack": "*",
+    "symfony/process": "4.3.*",
+    "symfony/security-bundle": "4.3.*",
+    "symfony/serializer-pack": "*",
+    "symfony/swiftmailer-bundle": "^3.1",
+    "symfony/translation": "4.3.*",
+    "symfony/twig-bundle": "4.3.*",
+    "symfony/twig-pack": "^1.0",
+    "symfony/validator": "4.3.*",
+    "symfony/web-link": "4.3.*",
+    "symfony/webpack-encore-bundle": "^1.7",
+    "symfony/yaml": "4.3.*"
+  },
+  "require-dev": {
+    "symfony/debug-pack": "*",
+    "symfony/maker-bundle": "^1.0",
+    "symfony/profiler-pack": "*",
+    "symfony/test-pack": "*",
+    "symfony/web-server-bundle": "4.3.*"
+  },
+  "config": {
+    "preferred-install": {
+      "*": "dist"
+    },
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "App\\Tests\\": "tests/"
+    }
+  },
+  "replace": {
+    "paragonie/random_compat": "2.*",
+    "symfony/polyfill-ctype": "*",
+    "symfony/polyfill-iconv": "*",
+    "symfony/polyfill-php71": "*",
+    "symfony/polyfill-php70": "*",
+    "symfony/polyfill-php56": "*"
+  },
+  "scripts": {
+    "auto-scripts": {
+      "cache:clear": "symfony-cmd",
+      "assets:install %PUBLIC_DIR%": "symfony-cmd"
+    },
+    "post-install-cmd": [
+      "@auto-scripts"
+    ],
+    "post-update-cmd": [
+      "@auto-scripts"
+    ]
+  },
+  "conflict": {
+    "symfony/symfony": "*"
+  },
+  "extra": {
+    "symfony": {
+      "allow-contrib": false,
+      "require": "4.3.*"
+    }
   }
 }
+
 ```
 
 Then run `composer install`
@@ -51,7 +134,7 @@ before calling it, you need to encode it in Base64 and pass it in parameters of 
 require_once(__DIR__ . '/vendor/autoload.php');
 
 
-$apiInstance = new OpenAPI\Client\Api\SecurityTokenApi(
+$apiInstance = new CpaymentConnector\Api\SecurityTokenApi(
     
     new GuzzleHttp\Client()
 );
@@ -76,31 +159,8 @@ Details:
 3. Forbidden equal to 403 your user or password is incorrect
 4. ServerError 500 Something wrong was happend in the server side
 
-## 4. Payment supported
-
-The CPayment support multiple methods of payment, below it the list supported 
-
-+ CB
-+ Visa
-+ MasterCard
-+ Cdiscount
-+ Casino
-+ Cofinoga
-+ Amex
-+ Finaref
-+ Aurore
-+ Cdiscount_Cup
-+ Diners
-+ Exito
-+ ExitoFranquicia
-+ PayPal
-+ BanContact
-+ Pse
-+ Paylib
-
-
-## 5. Playing with SDK
-### 5.1 Classes
+## 4. Playing with SDK
+### 4.1 Classes
 List of classes that is included in the SDK
 1. Card3DsPaymentApi --> Credit a card payment
 2. CardApi --> Achieve a 3DS payment
@@ -112,8 +172,8 @@ List of classes that is included in the SDK
 8. SecurityTokenApi --> Get the token provided by the Security Token Service (STS)
 9. StoredPaymentMethodsApi --> Sored payment method
 
-### 5.2 Example
-### 5.2.1 Payment Options
+### 4.2 Example
+### 4.2.1 Payment Options
 
 To get all payments methods supported you can call the function *v1PaymentOptionsMerchantsByMerchantIdSitesByMerchantSiteIdGet()* in *PaymentOptionsApi*.  
 
@@ -123,7 +183,7 @@ To get all payments methods supported you can call the function *v1PaymentOption
 require_once(__DIR__ . '/vendor/autoload.php');
 
 
-$apiInstance = new OpenAPI\Client\Api\PaymentOptionsApi(
+$apiInstance = new CpaymentConnector\Api\PaymentOptionsApi(
   
     new GuzzleHttp\Client()
 );
@@ -153,7 +213,7 @@ $cardPaymentApiInstance = new OpenAPI\Client\Api\CardPaymentApi(
 ?>
 ```
 
-### 5.2.2 Achieve a payment with a card
+### 4.2.2 Achieve a payment with a card
 
 To achieve a payment with a credit card we will use the function *v1PaymentsCardPaymentPost* in class *CardPaymentApi* and we need to pass a *CardPaymentRequest* object to this function 
 
@@ -194,9 +254,9 @@ Let's code
 
 ```php
 <?php
-    $card_payment_request = new \OpenAPI\Client\CpaymentModel\CardPaymentRequest(); // \OpenAPI\Client\CpaymentModel\CardPaymentRequest | All data needed to make card payment
+    $card_payment_request = new CpaymentConnector\Model\CardPaymentRequest(); // CpaymentConnector\Model\CardPaymentRequest | All data needed to make card payment
 
-    $context = new \OpenAPI\Client\CpaymentModel\CardPaymentContextData();
+    $context = new CpaymentConnector\Model\CardPaymentContextData();
     $context->setMerchantId(1);
     $context->setMerchantSiteId("100");
     $context->setCurrency("eur");
@@ -205,22 +265,22 @@ Let's code
     $context->setCustomerRef("CUSTOMER01");
     $context->setPaymentAttempt(1);
 
-    $option = new \OpenAPI\Client\CpaymentModel\Options();
+    $option = new CpaymentConnector\Model\Options();
 
-    $order = new \OpenAPI\Client\CpaymentModel\Order();
+    $order = new CpaymentConnector\Model\Order();
     $order->setOrderRef('Test_201910211514');
     $order->setInvoiceId(12345);
     $order->setOrderDate('2019/10/21');
     $order->setAmount('150');
 
-    $CardData = new \OpenAPI\Client\CpaymentModel\CardData();
+    $CardData = new CpaymentConnector\Model\CardData();
     $CardData->setCardScheme("cb");
     $CardData->setExpirationDate('12/23');
     $CardData->setCardNumber('5017670000001800');
     $CardData->setSecurityNumber('904');
     $CardData->setCardLabel('Jon doe');
 
-    $validationMode = new \OpenAPI\Client\CpaymentModel\ValidationModeOverride();
+    $validationMode = new CpaymentConnector\Model\ValidationModeOverride();
     $validationMode->setValidationMode("manual");
 
     $card_payment_request->setContext($context);
@@ -268,7 +328,7 @@ if something was wrong you will receive an object with the description of it, in
 
 in this case we need to renew our token before calling the function.
 
-### 5.2.3 Achieve a payment with a card using 3D secure.
+### 4.2.3 Achieve a payment with a card using 3D secure.
 
 The payment 3D secure is done in three steps.
 
@@ -345,7 +405,7 @@ example of form
         <input type = "hidden" id="MD" name="MD" value=""/>
     </form>
     <script>
-        <document.forms[0].submit();
+        document.forms[0].submit();
     </script>
 </body>
 </html>
