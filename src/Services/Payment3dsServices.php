@@ -58,16 +58,16 @@ class Payment3dsServices
         return  $this->card3DsPaymentApi->v1PaymentsCard3dsPaymentPost($this->GetToken(), $card3DsPaymentRequest);
     }
 
-    public function FinalisePayment3DS($merchantId,$merchantSiteId)
+    public function FinalisePayment3DS($merchantId,$merchantSiteId,$paymentRequestId,$orderRef,$labelTag)
     {
         $this->GetToken();
         $card3Ds_Payment_PutRequest = new Card3DsPaymentPutRequest(); 
 
         $card3Ds_Payment_PutRequest->setMerchantId($merchantId);
         $card3Ds_Payment_PutRequest->setMerchantSiteId($merchantSiteId);
-        $card3Ds_Payment_PutRequest->setPaymentRequestId($_SESSION["paymentRequestId"] );
-        $card3Ds_Payment_PutRequest->setOrderRef($_SESSION["orderRef"]);
-        $card3Ds_Payment_PutRequest->setOrderTag("LabelTag");
+        $card3Ds_Payment_PutRequest->setPaymentRequestId($paymentRequestId);
+        $card3Ds_Payment_PutRequest->setOrderRef($orderRef);
+        $card3Ds_Payment_PutRequest->setOrderTag($labelTag);
         
         return  $this->card3DsPaymentApi->v1PaymentsCard3dsPaymentPut($this->GetToken(), $card3Ds_Payment_PutRequest);
     }

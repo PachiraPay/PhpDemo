@@ -52,15 +52,14 @@ class Card3DsPaymentController extends AbstractController
       } catch (Exception $e) {
         $result = $e->getMessage();
       }
-      return $this->render('CardPayment3ds/result3ds.html.twig',['result' => $result]);
+      return $this->render('CardPayment3ds/InitPaiement3DsForm.html.twig',['result' => $result]);
     }
     else{
     $amountvar = rand(1,100000)/100;
     $payForm->setAmount($amountvar);
     $form = $this->createForm(PaymentInformationType::class, $payForm);
-    return $this->render('CardPayment/PaiementForm.html.twig', [
-      'form' => $form->createView(), 'title_page'=> 'Réaliser un paiement avec 3DS'
-      ]);
+    return $this->render('CardPayment3ds/Paiement3DsForm.html.twig', [
+      'form' => $form->createView()]);
     }
   }
 
@@ -71,12 +70,12 @@ class Card3DsPaymentController extends AbstractController
   {
     try
       {
-        $result = $this->paymentService3ds->FinalisePayment3DS(33,"99002");
+        $result = $this->paymentService3ds->FinalisePayment3DS(33,"99002",$_SESSION["paymentRequestId"],$_SESSION["orderRef"],"LabelTag");
       } catch (Exception $e) {
         $result = $e->getMessage();
       }
 
-    return $this->render('CardPayment3ds/result3dsPut.html.twig',['result' => $result]);
+    return $this->render('CardPayment3ds/FinalisePaiement3DsForm.html.twig',['result' => $result]);
   }
 
 }

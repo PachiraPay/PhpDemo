@@ -62,7 +62,7 @@ class PaymentOptionController extends AbstractController
       try   
       {
         $result =  $this->paymentOptionServices->GetPaymentOption($payForm);
-        return $this->render('PaymentOption/result.html.twig', [
+        return $this->render('PaymentOption/PaymentOptionResult.html.twig', [
           'result' => $result,
       ]);
       } catch (Exception $e) {
@@ -73,7 +73,7 @@ class PaymentOptionController extends AbstractController
       $payForm->setMerchantId($this->merchantId);
       $payForm->setMerchantSiteId($this->merchantSiteId);
       $form = $this->createForm(PaymentOptionType::class, $payForm);
-      return $this->render('PaymentOption/formsop.html.twig', [
+      return $this->render('PaymentOption/PaymentOptionForm.html.twig', [
         'form' => $form->createView(),
     ]);
     }

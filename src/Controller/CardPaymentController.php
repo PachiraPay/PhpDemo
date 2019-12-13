@@ -48,7 +48,7 @@ class CardPaymentController extends AbstractController
       } catch (Exception $e) {
         $result = $e->getMessage();
       }
-      return $this->render('CardPayment/result.html.twig',['result' => $result]);
+      return $this->render('CardPayment/PaiementResultForm.html.twig',['result' => $result]);
     }
     else 
     {
@@ -56,8 +56,8 @@ class CardPaymentController extends AbstractController
       $payForm->setAmount($amountvar);
       $form = $this->createForm(PaymentInformationType::class, $payForm);
       return $this->render('CardPayment/PaiementForm.html.twig', [
-        'form' => $form->createView(), 'title_page'=> 'Réaliser un paiement'
-        ]);
+        'form' => $form->createView()]);
+        
     }
   }
 }
