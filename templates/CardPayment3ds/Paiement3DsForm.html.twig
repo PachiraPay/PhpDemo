@@ -1,0 +1,21 @@
+{# templates/CardPayment3ds/Paiement3DsForm.html.twig #}
+
+
+{% extends "layout.html.twig" %}
+
+{% block body %}
+
+
+<h1>Réaliser un paiement avec 3DS</h1>
+
+{{ form_start(form) }}
+    {{ form_row(form._token) }} 
+
+    {{include('_paiementFormShared.html.twig')}}  
+    
+{{ form_end(form) }}
+
+
+     
+{% endblock %}
+
