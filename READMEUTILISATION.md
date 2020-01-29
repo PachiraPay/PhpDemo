@@ -338,7 +338,7 @@ The payment 3D secure is done in three steps.
 
 #### Step 1
 
-Using the POST methode _v1PaymentsCard3dsPaymentPost_ in class _Card3DsPaymentApi_ and we need to pass a _CardPaymentRequest_ object to this function _Card3DsPaymentRequest_
+Using the POST methode _v1PaymentsCard3dsPaymentPost_ in class _Card3DsPaymentApi_ and we need to pass a _CardPaymentRequest_ object to this function _Card3DsCheckEnrollmentRequest_
 
 As example we will use this object to simulate a payment with a card 3D Secure
 
@@ -422,7 +422,7 @@ example of form
 
 Finally, you can proceed with this PUT method to finish the payment. Replace the placeholder values of the merchantId, merchantSiteId and orderRef with the values you sent in the POST method, and the paymentRequestId with the value you received from said POST method.
 
-Using the PUT methode _v1PaymentsCard3dsPaymentPut_ in class _Card3DsPaymentApi_ and we need to pass a _CardPaymentRequest_ object to this function _Card3DsPaymentPutRequest_
+Using the PUT methode _v1PaymentsCard3dsPaymentPut_ in class _Card3DsPaymentApi_ and we need to pass a _CardPaymentRequest_ object to this function _Card3DsValidateAuthenticationAndAuthorizeRequest_
 
 As example we will use this object to simulate a payment with a card 3D Secure
 
