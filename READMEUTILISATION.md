@@ -1,16 +1,17 @@
 ## Change History
 
-| Version        | Date           | Changes  |
-| ------------- |:-------------:| -----:|
-| 1.0.0     | 27/09/2019 |  |
-
+| Version |    Date    | Changes |
+| ------- | :--------: | ------: |
+| 1.0.0   | 27/09/2019 |         |
 
 ## 1. Overview
 
 ## 1. Requirements
-+ You need to install PHP 5.5 and later
+
+- You need to install PHP 5.5 and later
 
 ## 2. Installation Details
+
 ### Composer
 
 To install the bindings via [Composer](http://getcomposer.org/), add the following to `composer.json`:
@@ -22,14 +23,14 @@ To install the bindings via [Composer](http://getcomposer.org/), add the followi
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/ccommercepayment/phpconnector"
+      "url": "https://github.com/pachirapay/phpconnector"
     }
   ],
   "require": {
     "php": "^7.1.3",
     "ext-ctype": "*",
     "ext-iconv": "*",
-    "cpayment/connector": "dev-master",
+    "pachirapay/connector": "dev-master",
     "doctrine/annotations": "^1.8",
     "sensio/framework-extra-bundle": "^5.5",
     "symfony/apache-pack": "^1.0",
@@ -92,12 +93,8 @@ To install the bindings via [Composer](http://getcomposer.org/), add the followi
       "cache:clear": "symfony-cmd",
       "assets:install %PUBLIC_DIR%": "symfony-cmd"
     },
-    "post-install-cmd": [
-      "@auto-scripts"
-    ],
-    "post-update-cmd": [
-      "@auto-scripts"
-    ]
+    "post-install-cmd": ["@auto-scripts"],
+    "post-update-cmd": ["@auto-scripts"]
   },
   "conflict": {
     "symfony/symfony": "*"
@@ -109,7 +106,6 @@ To install the bindings via [Composer](http://getcomposer.org/), add the followi
     }
   }
 }
-
 ```
 
 Then run `composer install`
@@ -119,10 +115,11 @@ Then run `composer install`
 Download the files and include `autoload.php`:
 
 ```php
-    require_once('/path/to/Cpayment.Connector/vendor/autoload.php');
+    require_once('/path/to/pachirapay.Connector/vendor/autoload.php');
 ```
 
 ## 3. Token
+
 Before calling any services, we need to generate a valid token it will be expire in 48h so you need to check or renew it before calling in other service
 When you you buy our service, you will get an user and password to get a token
 before calling it, you need to encode it in Base64 and pass it in parameters of the function
@@ -134,8 +131,8 @@ before calling it, you need to encode it in Base64 and pass it in parameters of 
 require_once(__DIR__ . '/vendor/autoload.php');
 
 
-$apiInstance = new CpaymentConnector\Api\SecurityTokenApi(
-    
+$apiInstance = new pachirapay\Api\SecurityTokenApi(
+
     new GuzzleHttp\Client()
 );
 $authorization = 'dXNlcjpwYXNzd29yZA==';
@@ -149,19 +146,24 @@ try {
 ?>
 ```
 
-If there everything was good you will receive a valid GUID token : _f40dd89dff8246d285115f6f45ca05d4_ Otherwise you will get an error with the message that explain what happen 
+If there everything was good you will receive a valid GUID token : _f40dd89dff8246d285115f6f45ca05d4_ Otherwise you will get an error with the message that explain what happen
 
 ### 3.2 Response
+
 The function _v1AuthTokenGet_ return result as a string with response code.
 Details:
+
 1. ResponseCode equal to 200 mean Success and you will get the token its 32 character
 2. BadRequest equal to 400 mean that you forget to put the authentification in parameter or your parameter is not a valid base64
 3. Forbidden equal to 403 your user or password is incorrect
 4. ServerError 500 Something wrong was happend in the server side
 
 ## 4. Playing with SDK
+
 ### 4.1 Classes
+
 List of classes that is included in the SDK
+
 1. Card3DsPaymentApi --> Credit a card payment
 2. CardApi --> Achieve a 3DS payment
 3. CardPaymentApi : Achieve a payment with a card without 3DSecure
@@ -173,18 +175,18 @@ List of classes that is included in the SDK
 9. StoredPaymentMethodsApi --> Sored payment method
 
 ### 4.2 Example
+
 ### 4.2.1 Payment Options
 
-To get all payments methods supported you can call the function *v1PaymentOptionsMerchantsByMerchantIdSitesByMerchantSiteIdGet()* in *PaymentOptionsApi*.  
-
+To get all payments methods supported you can call the function _v1PaymentOptionsMerchantsByMerchantIdSitesByMerchantSiteIdGet()_ in _PaymentOptionsApi_.
 
 ```php
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
 
-$apiInstance = new CpaymentConnector\Api\PaymentOptionsApi(
-  
+$apiInstance = new pachirapay\Api\PaymentOptionsApi(
+
     new GuzzleHttp\Client()
 );
 $merchant_id = 1; // int | The merchant identifier.
@@ -207,7 +209,7 @@ $cardPaymentApiInstance = new OpenAPI\Client\Api\CardPaymentApi(
      try {
        $result = $cardPaymentApiInstance->v1PaymentsCardPaymentPost($auth_token, $card_payment_request);
        print_r($result);
-    } catch (Exception $e) 
+    } catch (Exception $e)
           echo 'Exception when calling CardPaymentApi->v1PaymentsCardPaymentPost:', $e->getMessage(), PHP_EOL;
     }
 ?>
@@ -215,9 +217,10 @@ $cardPaymentApiInstance = new OpenAPI\Client\Api\CardPaymentApi(
 
 ### 4.2.2 Achieve a payment with a card
 
-To achieve a payment with a credit card we will use the function *v1PaymentsCardPaymentPost* in class *CardPaymentApi* and we need to pass a *CardPaymentRequest* object to this function 
+To achieve a payment with a credit card we will use the function _v1PaymentsCardPaymentPost_ in class _CardPaymentApi_ and we need to pass a _CardPaymentRequest_ object to this function
 
 as example we will use this object to simulate a payment with a card and this is the minimum of what you need to achieve this
+
 ```
 {
   "context": {
@@ -228,7 +231,7 @@ as example we will use this object to simulate a payment with a card and this is
     "paymentOptionRef": "1",
     "customerRef": "CUSTOMER01",
     "paymentAttempt": 1
-  },	
+  },
   "options": {},
   "order": {
     "orderRef": "ORDERREF_12345XX",
@@ -248,15 +251,16 @@ as example we will use this object to simulate a payment with a card and this is
   "validationMode": null
 }
 ```
+
 _Note_ that orderRef need to be unique otherwise you will get an error that tell you this orderRef was already saved.
-notificationUrl if you want to send a notification result to an other url. 
+notificationUrl if you want to send a notification result to an other url.
 Let's code
 
 ```php
 <?php
-    $card_payment_request = new CpaymentConnector\Model\CardPaymentRequest(); // CpaymentConnector\Model\CardPaymentRequest | All data needed to make card payment
+    $card_payment_request = new pachirapay\Model\CardPaymentRequest(); // pachirapay\Model\CardPaymentRequest | All data needed to make card payment
 
-    $context = new CpaymentConnector\Model\CardPaymentContextData();
+    $context = new pachirapay\Model\CardPaymentContextData();
     $context->setMerchantId(1);
     $context->setMerchantSiteId("100");
     $context->setCurrency("eur");
@@ -265,22 +269,22 @@ Let's code
     $context->setCustomerRef("CUSTOMER01");
     $context->setPaymentAttempt(1);
 
-    $option = new CpaymentConnector\Model\Options();
+    $option = new pachirapay\Model\Options();
 
-    $order = new CpaymentConnector\Model\Order();
+    $order = new pachirapay\Model\Order();
     $order->setOrderRef('Test_201910211514');
     $order->setInvoiceId(12345);
     $order->setOrderDate('2019/10/21');
     $order->setAmount('150');
 
-    $CardData = new CpaymentConnector\Model\CardData();
+    $CardData = new pachirapay\Model\CardData();
     $CardData->setCardScheme("cb");
     $CardData->setExpirationDate('12/23');
     $CardData->setCardNumber('5017670000001800');
     $CardData->setSecurityNumber('904');
     $CardData->setCardLabel('Jon doe');
 
-    $validationMode = new CpaymentConnector\Model\ValidationModeOverride();
+    $validationMode = new pachirapay\Model\ValidationModeOverride();
     $validationMode->setValidationMode("manual");
 
     $card_payment_request->setContext($context);
@@ -313,7 +317,7 @@ example of success response
 }
 ```
 
-if something was wrong you will receive an object with the description of it, in this example we will simulate a no valid token and the response will be 
+if something was wrong you will receive an object with the description of it, in this example we will simulate a no valid token and the response will be
 
 ```
 {
@@ -333,7 +337,8 @@ in this case we need to renew our token before calling the function.
 The payment 3D secure is done in three steps.
 
 #### Step 1
-Using the POST methode *v1PaymentsCard3dsPaymentPost* in class *Card3DsPaymentApi* and we need to pass a *CardPaymentRequest* object to this function *Card3DsPaymentRequest* 
+
+Using the POST methode _v1PaymentsCard3dsPaymentPost_ in class _Card3DsPaymentApi_ and we need to pass a _CardPaymentRequest_ object to this function _Card3DsPaymentRequest_
 
 As example we will use this object to simulate a payment with a card 3D Secure
 
@@ -365,6 +370,7 @@ As example we will use this object to simulate a payment with a card 3D Secure
 }
 
 ```
+
 Remember to take note of the merchantId, merchantSiteId and orderRef you are sending, as well as the paymentRequestId you receive. You will need them again in step 3.
 
 Also please take note of the parameter values you receive in the response, as you will need them in step 2.
@@ -390,6 +396,7 @@ Example of success response
 ```
 
 #### Step 2
+
 Then, you need to create and send a form for the user to validate the 3DS part of the card validation. We have provided you an example for the form (see below).
 
 Simply replace the placeholder values for the parameters you received
@@ -398,24 +405,24 @@ example of form
 
 ```html
 <html lang="en">
-<body>
-    <form id = "formulaire" method="post" action="card3dsRedirectionData.redirectionUrl">
-        <input type = "hidden" id="PaReq" name="parPaReqam" value="value2"/>
-        <input type = "hidden" id="TermUrl" name="TermUrl" value="value3"/>
-        <input type = "hidden" id="MD" name="MD" value=""/>
+  <body>
+    <form id="formulaire" method="post" action="card3dsRedirectionData.redirectionUrl">
+      <input type="hidden" id="PaReq" name="parPaReqam" value="value2" />
+      <input type="hidden" id="TermUrl" name="TermUrl" value="value3" />
+      <input type="hidden" id="MD" name="MD" value="" />
     </form>
     <script>
-        document.forms[0].submit();
+      document.forms[0].submit();
     </script>
-</body>
+  </body>
 </html>
-
 ```
 
 #### Step 3
+
 Finally, you can proceed with this PUT method to finish the payment. Replace the placeholder values of the merchantId, merchantSiteId and orderRef with the values you sent in the POST method, and the paymentRequestId with the value you received from said POST method.
 
-Using the PUT methode *v1PaymentsCard3dsPaymentPut* in class *Card3DsPaymentApi* and we need to pass a *CardPaymentRequest* object to this function *Card3DsPaymentPutRequest* 
+Using the PUT methode _v1PaymentsCard3dsPaymentPut_ in class _Card3DsPaymentApi_ and we need to pass a _CardPaymentRequest_ object to this function _Card3DsPaymentPutRequest_
 
 As example we will use this object to simulate a payment with a card 3D Secure
 

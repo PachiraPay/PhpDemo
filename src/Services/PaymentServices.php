@@ -6,25 +6,25 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use App\Models\PaymentInformation;
-use CpaymentConnector\ApiException;
-use CpaymentConnector\Configuration;
+use pachirapay\ApiException;
+use pachirapay\Configuration;
 
-use CpaymentConnector\Api\CardPaymentApi;
-use CpaymentConnector\Api\SecurityTokenApi;
-use CpaymentConnector\Model\CardPaymentRequest;
-use CpaymentConnector\Model\CardPaymentContextData;
-use CpaymentConnector\Model\Options;
-use CpaymentConnector\Model\Order;
-use CpaymentConnector\Model\CardData;
-use CpaymentConnector\Model\StoredCard;
-use CpaymentConnector\Model\ValidationModeOverride;
+use pachirapay\Api\CardPaymentApi;
+use pachirapay\Api\SecurityTokenApi;
+use pachirapay\Model\CardPaymentRequest;
+use pachirapay\Model\CardPaymentContextData;
+use pachirapay\Model\Options;
+use pachirapay\Model\Order;
+use pachirapay\Model\CardData;
+use pachirapay\Model\StoredCard;
+use pachirapay\Model\ValidationModeOverride;
 
 class PaymentServices
 {
     /** @var type $ description. */
     protected $securityTokenApi = null;
 
-    /** @var CardPaymentApi $cardPaymentApi cardPaymentApi from Cpayment. */
+    /** @var CardPaymentApi $cardPaymentApi cardPaymentApi from Pachirapay. */
     protected $cardPaymentApi = null;
     
     /** @var int $MerchantId description. */
