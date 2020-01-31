@@ -25,10 +25,10 @@ use Psr\Log\LoggerInterface;
 class PaymentOptionController extends AbstractController
 {
   
-    /** @var PaymentServices $paymentServices paymentservice from Cpayment. */
+    /** @var PaymentServices $paymentServices paymentservice from Pachirapay. */
     protected $paymentServices = null;
   
-    /** @var PaymentOptionServices $paymentOptionServices paymentOptionservice from Cpayment. */
+    /** @var PaymentOptionServices $paymentOptionServices paymentOptionservice from Pachirapay. */
     protected $paymentOptionServices = null;
 
     /** @var int $MerchantId description. */

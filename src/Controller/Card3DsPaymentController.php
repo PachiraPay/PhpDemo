@@ -19,7 +19,7 @@ use App\Types\PaymentInformationType;
 
 class Card3DsPaymentController extends AbstractController
 {
-  /** @var Payment3dsServices $paymentService3ds paymentservice from Cpayment. */ 
+  /** @var Payment3dsServices $paymentService3ds paymentservice from Pachirapay. */ 
   protected $paymentService3ds = null;
   
   /**

@@ -6,26 +6,26 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use App\Models\PaymentInformation;
-use CpaymentConnector\ApiException;
-use CpaymentConnector\Configuration;
+use pachirapay\ApiException;
+use pachirapay\Configuration;
 
-use CpaymentConnector\Api\Card3DsPaymentApi;
-use CpaymentConnector\Api\SecurityTokenApi;
-use CpaymentConnector\Model\Card3DsPaymentRequest;
-use CpaymentConnector\Model\Card3DsPaymentPutRequest;
-use CpaymentConnector\Model\CardPaymentContextData;
-use CpaymentConnector\Model\Options;
-use CpaymentConnector\Model\Order;
-use CpaymentConnector\Model\CardData;
-use CpaymentConnector\Model\StoredCard;
-use CpaymentConnector\Model\ValidationModeOverride;
+use pachirapay\Api\Card3DsPaymentApi;
+use pachirapay\Api\SecurityTokenApi;
+use pachirapay\Model\Card3DsCheckEnrollmentRequest;
+use pachirapay\Model\Card3DsValidateAuthenticationAndAuthorizeRequest;
+use pachirapay\Model\CardPaymentContextData;
+use pachirapay\Model\Options;
+use pachirapay\Model\Order;
+use pachirapay\Model\CardData;
+use pachirapay\Model\StoredCard;
+use pachirapay\Model\ValidationModeOverride;
 
 class Payment3dsServices
 {
     /** @var type $ description. */
     protected $securityTokenApi = null;
 
-    /** @var Card3DsPaymentApi $card3DsPaymentApi card3DsPaymentApi from Cpayment. */
+    /** @var Card3DsPaymentApi $card3DsPaymentApi card3DsPaymentApi from Pachirapay. */
     protected $card3DsPaymentApi = null;
     
     /** @var int $MerchantId description. */
@@ -54,14 +54,14 @@ class Payment3dsServices
     public function InitPayment3DS(PaymentInformation $paymentInformation)
     {
         $this->GetToken();
-        $card3DsPaymentRequest = $this->ConvertToCard3DsPaymentRequest($paymentInformation);
-        return  $this->card3DsPaymentApi->v1PaymentsCard3dsPaymentPost($this->GetToken(), $card3DsPaymentRequest);
+        $card3DsCheckEnrollmentRequest = $this->ConvertToCard3DsPaymentRequest($paymentInformation);
+        return  $this->card3DsPaymentApi->v1PaymentsCard3dsPaymentPost($this->GetToken(), $card3DsCheckEnrollmentRequest);
     }
 
     public function FinalisePayment3DS($merchantId,$merchantSiteId,$paymentRequestId,$orderRef,$labelTag)
     {
         $this->GetToken();
-        $card3Ds_Payment_PutRequest = new Card3DsPaymentPutRequest(); 
+        $card3Ds_Payment_PutRequest = new Card3DsValidateAuthenticationAndAuthorizeRequest(); 
 
         $card3Ds_Payment_PutRequest->setMerchantId($merchantId);
         $card3Ds_Payment_PutRequest->setMerchantSiteId($merchantSiteId);
@@ -91,7 +91,7 @@ class Payment3dsServices
         $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 
         "https" : "http") . "://" . $_SERVER['HTTP_HOST'] ;
         
-        $card3ds_payment_request = new Card3DsPaymentRequest(); 
+        $card3ds_payment_request = new Card3DsCheckEnrollmentRequest(); 
         $card3ds_payment_request->setReturnUrl($link."/CardPayment3dsPut");
         $context = new CardPaymentContextData();
         $context->setMerchantId(33);//lecture depuis form
