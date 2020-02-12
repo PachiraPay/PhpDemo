@@ -1,0 +1,172 @@
+
+{# templates/_paiementFormShared.html.twig #}
+
+<div class="col-xs-12 col-md-6 col-md-offset-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <h3 class="text-center">Détails du paiement</h3>
+                                        <img class="img-responsive cc-img" src="http://www.prepbootstrap.com/Content/images/shared/misc/creditcardicons.png">
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <form role="form">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                     {{ form_label(form.amount, 'MONTANT')}}  
+                                                     {{ form_widget(form.amount) }} 
+                                                    <span class="label label-default"> {{ form.vars.value.amount }} €</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    {{ form_label(form.creditCardNumber, 'NUMÉRO DE CARTE') }}  
+                                                    <div class="input-group has-feedback">
+                                                        <span class="input-group-addon"><span class="fa fa-credit-card"></span></span>
+                                                        <div id="ccidDiv">
+                                                            {{ form_widget(form.creditCardNumber, {'id':'NumCarte'}) }}
+                                                            <span id="ccidSpan" class="glyphicon"></span> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    {{ form_label(form.name, 'NOM ET PRÉNOM') }}
+                                                    {{ form_widget(form.name, {'id':'nomPrenom' }) }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-7 col-md-7">
+                                                <div class="form-group">
+                                                {{ form_label(form.expirationDate, 'DATE D\'EXPIRATION') }}  
+                                                {{ form_widget(form.expirationDate, {'id':"expiration" }) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-5 col-md-5 pull-right">
+                                                <div class="form-group">
+                                                    {{form_label(form.ccv,'CCV')}}
+                                                    {{form_widget(form.ccv, {'id':"ccvId" }) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    {{form_label(form.orderRef,'ORDER REF')}}
+                                                    {{form_widget(form.orderRef) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                                    {{ form_row(form.save, { 'required': true, 'label' : 'Payer'|upper, 'attr' : {'class' : "btn btn-warning btn-lg btn-block"}}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+
+                        </div>
+{% block bodyjs %}
+        {# {{ parent() }} #}
+                <script data-autoinit="true">
+
+                function setInputFilter(textbox, inputFilter) {
+                ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+                    textbox.addEventListener(event, function() {
+                    if (inputFilter(this.value)) {
+                        this.oldValue = this.value;
+                        this.oldSelectionStart = this.selectionStart;
+                        this.oldSelectionEnd = this.selectionEnd;
+                    } else if (this.hasOwnProperty("oldValue")) {
+                        this.value = this.oldValue;
+                        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                    }
+                    });
+                });
+                }
+
+                setInputFilter(document.getElementById("ccvId"), function(value) {
+                return /^\d*$/.test(value); });
+
+                 function valid_credit_card(value) {
+                        //console.log(value);
+                        // console.log("Hello");
+                    var cardNum= value.value;
+                    // Accept only digits, dashes or spaces
+                    if (/[^0-9-\s]+/.test(cardNum)) return false;
+
+                    // The Luhn Algorithm. It's so pretty.
+                    let nCheck = 0, bEven = false;
+                    cardNum = cardNum.replace(/\D/g, "");
+                    //alert(cardNum)
+                    for (var n = cardNum.length - 1; n >= 0; n--) {
+                        var cDigit = cardNum.charAt(n),
+                            nDigit = parseInt(cDigit, 10);
+                
+                        if (bEven && (nDigit *= 2) > 9) nDigit -= 9;
+                
+                        nCheck += nDigit;
+                        bEven = !bEven;
+                    }
+                    //alert(nCheck % 10)
+                    return (nCheck % 10) == 0;
+                
+                }
+                function checkCardNumber(typedNb) {
+    
+                var ccidDiv = document.getElementById("ccidDiv");
+                var ccidSpan = document.getElementById("ccidSpan");
+
+                if (typedNb.length < 19) {
+                    errorCssClass();  
+                }
+                else {
+                    let validity = valid_credit_card(typedNb);
+                    if (validity) {
+                        successCssClass();
+                    }else{
+                        errorCssClass(); 
+                    }
+                
+                }
+            
+            }
+            function successCssClass() {
+            ccidDiv.classList.remove("has-error");
+            ccidDiv.classList.remove("has-feedback");
+            ccidSpan.classList.remove("glyphicon-remove");
+            ccidSpan.classList.remove("form-control-feedback");
+
+            ccidDiv.classList.add("has-success");
+            ccidDiv.classList.add("has-feedback");
+            ccidSpan.classList.add("glyphicon-ok");
+            ccidSpan.classList.add("form-control-feedback");
+            }
+
+            function errorCssClass() {
+                        ccidDiv.classList.remove("has-success");
+                        ccidDiv.classList.remove("has-success");
+                        ccidSpan.classList.remove("glyphicon-ok");
+                        ccidSpan.classList.remove("form-control-feedback");
+
+                        ccidDiv.classList.add("has-error");
+                        ccidDiv.classList.add("has-feedback");
+                        ccidSpan.classList.add("glyphicon-remove");
+                        ccidSpan.classList.add("form-control-feedback");
+            }
+                </script>
+
+                
+        {% endblock %}

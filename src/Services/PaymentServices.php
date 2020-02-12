@@ -6,25 +6,25 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use App\Models\PaymentInformation;
-use CpaymentConnector\ApiException;
-use CpaymentConnector\Configuration;
+use pachirapay\ApiException;
+use pachirapay\Configuration;
 
-use CpaymentConnector\Api\CardPaymentApi;
-use CpaymentConnector\Api\SecurityTokenApi;
-use CpaymentConnector\Model\CardPaymentRequest;
-use CpaymentConnector\Model\CardPaymentContextData;
-use CpaymentConnector\Model\Options;
-use CpaymentConnector\Model\Order;
-use CpaymentConnector\Model\CardData;
-use CpaymentConnector\Model\StoredCard;
-use CpaymentConnector\Model\ValidationModeOverride;
+use pachirapay\Api\CardPaymentApi;
+use pachirapay\Api\SecurityTokenApi;
+use pachirapay\Model\CardPaymentRequest;
+use pachirapay\Model\CardPaymentContextData;
+use pachirapay\Model\Options;
+use pachirapay\Model\Order;
+use pachirapay\Model\CardData;
+use pachirapay\Model\StoredCard;
+use pachirapay\Model\ValidationModeOverride;
 
 class PaymentServices
 {
     /** @var type $ description. */
     protected $securityTokenApi = null;
 
-    /** @var CardPaymentApi $cardPaymentApi cardPaymentApi from Cpayment. */
+    /** @var CardPaymentApi $cardPaymentApi cardPaymentApi from Pachirapay. */
     protected $cardPaymentApi = null;
     
     /** @var int $MerchantId description. */
@@ -65,7 +65,6 @@ class PaymentServices
             $auth_token = $this->securityTokenApi->v1AuthTokenGet($authorization);
             $auth_token = trim($auth_token,'"');
             $this->token = $auth_token ;
-
         }
         return $this->token ;
     }
@@ -88,18 +87,14 @@ class PaymentServices
         $order->setOrderRef($paymentInformation->getOrderRef());
         $order->setInvoiceId(12345);
         $order->setOrderDate(date("Y/m/d H:i:s"));
-        $order->setAmount($paymentInformation->getAmount());
-    
+        $order->setAmount($paymentInformation->getAmount()*100);
+            
         $CardData = new CardData();
         $CardData->setCardScheme("cb");
         $CardData->setExpirationDate($paymentInformation->getExpirationDate());
-        $CardData->setCardNumber($paymentInformation->getCreditCardNumber());
+        $CardData->setCardNumber(str_replace(' ', '', $paymentInformation->getCreditCardNumber()));
         $CardData->setSecurityNumber($paymentInformation->getCcv());
         $CardData->setCardLabel($paymentInformation->getName());
-    
-        $StoredCard = new StoredCard();
-        $StoredCard->setId("blablacarte");
-        $StoredCard->setLabel("labelcarte");
     
         $validationMode = new ValidationModeOverride();
         $validationMode->setValidationMode("manual");
@@ -108,9 +103,7 @@ class PaymentServices
         $card_payment_request->setOptions($option);
         $card_payment_request->setOrder($order);
         $card_payment_request->setCard($CardData);
-        $card_payment_request->setStoredCard($StoredCard);
         $card_payment_request->setValidationMode($validationMode);
-        $card_payment_request->setNotificationUrl("http://merchant.com/notification");
         return $card_payment_request;
     }
 }
